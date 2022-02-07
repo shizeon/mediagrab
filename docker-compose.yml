@@ -1,6 +1,8 @@
 ---
-version: "2"
+version: "3"
+
 services:
+
   sonarr:
     image: linuxserver/sonarr
     container_name: sonarr
@@ -11,10 +13,14 @@ services:
     volumes:
       - /srv/other/docker/fileshare/config-sonarr:/config
       - /srv/media:/srv/media
+    networks:
+      - default
     ports:
-      - 8989:8989
+      #- 8989:8989
+      - 8989
     mem_limit: 4096m
     restart: unless-stopped
+
   radarr:
     image: linuxserver/radarr
     container_name: radarr
@@ -26,9 +32,10 @@ services:
       - /srv/other/docker/fileshare/config-radarr:/config
       - /srv/media:/srv/media
     ports:
-      - 7878:7878
+      - 7878
     mem_limit: 4096m
     restart: unless-stopped
+
   jackett:
     image: linuxserver/jackett
     container_name: jackett
@@ -36,23 +43,30 @@ services:
       - PUID=1000
       - PGID=121
       - TZ=America/Phoenix
-        #- RUN_OPTS=<run options here> #optional
     volumes:
       - /srv/other/docker/fileshare/config-jackett:/config
       - /srv/other/docker/downloads:/downloads
+    networks:
+      - default
     ports:
-      - 9117:9117
+      - 9117
     mem_limit: 4096m
     restart: unless-stopped
-  web_proxy:
+
+  nginx:
     image: nginx:latest
     container_name: nginx
     environment:
       - TEST=ok
     volumes:
-      - ./nginx.conf:/etc/nginx/templates
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/nginx/ssl
+    networks:
+      - default
     ports:
       - 443:443
     restart: unless-stopped
 
-
+networks:
+  default:
+    name: fileshare-network
