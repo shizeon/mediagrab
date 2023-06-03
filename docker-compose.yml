@@ -52,7 +52,7 @@ services:
       - ${DELUGE_DOWNLOAD_ROOT}:${DELUGE_DOWNLOAD_ROOT}:rw
       - ${VIDEO_FILES}:${VIDEO_FILES}:rw
     ports:
-      - 7878:7878
+      - 7878
     mem_limit: 4096m
     restart: unless-stopped
 
@@ -87,6 +87,7 @@ services:
     volumes:
       - /srv/other/docker/fileshare/config-unpackerr:/config
       - ${DELUGE_DOWNLOAD_ROOT}:${DELUGE_DOWNLOAD_ROOT}:rw
+    restart: unless-stopped
 
   nginx:
     image: nginx:latest
