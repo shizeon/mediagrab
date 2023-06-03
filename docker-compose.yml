@@ -9,12 +9,12 @@ services:
     environment:
       - PUID=1000
       - PGID=121
-      - TZ=America/Phoenix
+      - TZ=${TZ}
       - DELUGE_LOGLEVEL=error #optional
     volumes:
       - /srv/other/docker/fileshare/config-deluge:/config
-      - /srv/media/Torrents/Deluge:/torrents
-      - /srv/media/Torrents/Deluge:/srv/media/Torrents/Deluge
+      - ${DELUGE_DOWNLOAD_ROOT}:/torrents
+      - ${DELUGE_DOWNLOAD_ROOT}:${DELUGE_DOWNLOAD_ROOT}
     ports:
       - 8112
       - 9893:9893
@@ -28,14 +28,14 @@ services:
     environment:
       - PUID=1000
       - PGID=121
-      - TZ=America/Phoenix
+      - TZ=${TZ}
     volumes:
       - /srv/other/docker/fileshare/config-sonarr:/config
-      - /srv/media:/srv/media
+      - ${DELUGE_DOWNLOAD_ROOT}:${DELUGE_DOWNLOAD_ROOT}:rw
+      - ${VIDEO_FILES}:${VIDEO_FILES}:rw
     networks:
       - default
     ports:
-      #- 8989:8989
       - 8989
     mem_limit: 4096m
     restart: unless-stopped
@@ -46,12 +46,13 @@ services:
     environment:
       - PUID=1000
       - PGID=121
-      - TZ=America/Phoenix
+      - TZ=${TZ}
     volumes:
       - /srv/other/docker/fileshare/config-radarr:/config
-      - /srv/media:/srv/media
+      - ${DELUGE_DOWNLOAD_ROOT}:${DELUGE_DOWNLOAD_ROOT}:rw
+      - ${VIDEO_FILES}:${VIDEO_FILES}:rw
     ports:
-      - 7878
+      - 7878:7878
     mem_limit: 4096m
     restart: unless-stopped
 
@@ -61,16 +62,31 @@ services:
     environment:
       - PUID=1000
       - PGID=121
-      - TZ=America/Phoenix
+      - TZ=${TZ}
     volumes:
       - /srv/other/docker/fileshare/config-jackett:/config
-      - /srv/other/docker/downloads:/downloads
     networks:
       - default
     ports:
-      - 9117:9117
+      - 9117
     mem_limit: 4096m
     restart: unless-stopped
+
+  unpackerr:
+    image: cr.hotio.dev/hotio/unpackerr
+    container_name: unpackerr
+    environment:
+      - PUID=1000
+      - PGID=121
+      - UMASK=002
+      - TZ=${TZ}
+      - UN_SONARR_0_API_KEY=${UN_SONARR_0_API_KEY}
+      - UN_SONARR_0_PATHS_0=${DELUGE_DOWNLOAD_ROOT}
+      - UN_RADARR_0_API_KEY=${UN_RADARR_0_API_KEY}
+      - UN_RADARR_0_PATHS_0=${DELUGE_DOWNLOAD_ROOT}
+    volumes:
+      - /srv/other/docker/fileshare/config-unpackerr:/config
+      - ${DELUGE_DOWNLOAD_ROOT}:${DELUGE_DOWNLOAD_ROOT}:rw
 
   nginx:
     image: nginx:latest
