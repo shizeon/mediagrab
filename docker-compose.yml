@@ -16,7 +16,7 @@ services:
       - ${DELUGE_DOWNLOAD_ROOT}:/torrents
       - ${DELUGE_DOWNLOAD_ROOT}:${DELUGE_DOWNLOAD_ROOT}
     ports:
-      - 8112
+      # - 8112
       - 9893:9893
       - 9893:9893/udp
       - 58846:58846
@@ -35,8 +35,8 @@ services:
       - ${VIDEO_FILES}:${VIDEO_FILES}:rw
     networks:
       - default
-    ports:
-      - 8989
+    # ports:
+    #  - 8989:8989
     mem_limit: 4096m
     restart: unless-stopped
 
@@ -51,8 +51,8 @@ services:
       - /srv/other/docker/fileshare/config-radarr:/config
       - ${DELUGE_DOWNLOAD_ROOT}:${DELUGE_DOWNLOAD_ROOT}:rw
       - ${VIDEO_FILES}:${VIDEO_FILES}:rw
-    ports:
-      - 7878
+      # ports:
+      # - 7878
     mem_limit: 4096m
     restart: unless-stopped
 
@@ -67,8 +67,8 @@ services:
       - /srv/other/docker/fileshare/config-jackett:/config
     networks:
       - default
-    ports:
-      - 9117
+    # ports:
+    #   - 9117
     mem_limit: 4096m
     restart: unless-stopped
 

@@ -3,5 +3,5 @@ config*/*
 !config-unpackerr/*
 ssl/*
 !ssl/.gitkeep
-config-unpackerr/unpackerr.log
+config-unpackerr/*.log
 .env
