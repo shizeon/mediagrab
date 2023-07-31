@@ -89,6 +89,23 @@ services:
       - ${DELUGE_DOWNLOAD_ROOT}:${DELUGE_DOWNLOAD_ROOT}:rw
     restart: unless-stopped
 
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: lidarr
+    environment:
+      - PUID=1000
+      - PGID=121
+      - TZ=${TZ}
+    volumes:
+      - /srv/other/docker/fileshare/config-lidarr:/config
+      - ${DELUGE_DOWNLOAD_ROOT}:${DELUGE_DOWNLOAD_ROOT}:rw
+      - ${MUSIC_FILES}:${MUSIC_FILES}:rw
+      #- /path/to/downloads:/downloads #optional
+    mem_limit: 4096m
+    ports:
+      - 8686
+    restart: unless-stopped
+
   nginx:
     image: nginx:latest
     container_name: nginx
