@@ -73,7 +73,7 @@ services:
     restart: unless-stopped
 
   unpackerr:
-    image: cr.hotio.dev/hotio/unpackerr
+    image: golift/unpackerr
     container_name: unpackerr
     environment:
       - PUID=1000
