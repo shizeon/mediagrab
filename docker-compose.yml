@@ -10,7 +10,7 @@ services:
       - PUID=1000
       - PGID=121
       - TZ=${TZ}
-      - DELUGE_LOGLEVEL=error #optional
+      - DELUGE_LOGLEVEL=info 
     volumes:
       - /srv/other/docker/fileshare/config-deluge:/config
       - ${DELUGE_DOWNLOAD_ROOT}:/torrents

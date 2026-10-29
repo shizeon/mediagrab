@@ -5,3 +5,4 @@ ssl/*
 !ssl/.gitkeep
 config-unpackerr/*.log
 .env
+config-unpackerr/unpackerr.conf.bak
